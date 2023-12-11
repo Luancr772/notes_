@@ -8,15 +8,30 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-
-
-
-const LoginScreen = ({navigation}) => {
+import { firebase } from "../firebase";
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  
 
+  loginUser = async (email, password) => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const forgetPassword = () => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert("Password reset email sent");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
   return (
     <SafeAreaView
       style={{
@@ -76,7 +91,7 @@ const LoginScreen = ({navigation}) => {
           </View>
         </View>
         <Pressable
-        
+          onPress={() => loginUser(email, password)}
           style={{
             backgroundColor: "#003580",
             padding: 15,
@@ -98,8 +113,23 @@ const LoginScreen = ({navigation}) => {
             Login
           </Text>
         </Pressable>
-        <Pressable onPress={()=>navigation.navigate("Signup")} style={{marginTop:10}}>
-         <Text style={{textAlign:'center',color:'gray',fontSize:17}}>Don't have an account? Sign in </Text>
+        <Pressable
+          onPress={() => navigation.navigate("Signup")}
+          style={{ marginTop: 10 }}
+        >
+          <Text style={{ textAlign: "center", color: "gray", fontSize: 17 }}>
+            Don't have an account? Sign in{" "}
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            forgetPassword();
+          }}
+          style={{ marginTop: 10 }}
+        >
+          <Text style={{ textAlign: "center", color: "gray", fontSize: 17 }}>
+            Forget Password?
+          </Text>
         </Pressable>
       </KeyboardAvoidingView>
     </SafeAreaView>
