@@ -1,12 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, SafeAreaView } from 'react-native';
+import Home from './Pages/Home';
+import { NavigationContainer} from '@react-navigation/native';
+import NavigationAddNote from './Navigator/NavigationAddNote';
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Đồ Án Cuối Kì</Text>
+    <SafeAreaView style={styles.container}>
+      <Home/>
+      <NavigationContainer>
+        <NavigationAddNote/>
+      </NavigationContainer>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
